@@ -1,0 +1,165 @@
+#include <iostream>
+#include <string>
+#define SIZE 8
+using namespace std;
+
+struct Worker
+{
+	string post;
+	int experience;
+	int salary;
+
+	void print()
+	{
+		cout << "Занимаемая должность: " << post << "\nОпыт работы: " << experience << "\nЗарплата: " << salary << " грн" << endl << endl;
+	}
+};
+
+struct Queue
+{
+	int first = 0;
+	int last = 0;
+	int size = 0;
+	Worker queueArr[SIZE];
+
+	void push(Worker current)
+	{
+		if (checkSize() != SIZE)
+		{
+			queueArr[last] = current;
+			last = (last + 1) % SIZE;
+			size++;
+		}
+		else cout << "Стоп! В очереди уже нет места, посидите в зале ожидания!\n\n";
+	}
+
+	void pop()
+	{
+		if (!empty())
+		{
+			first = (first + 1) % SIZE;
+			size--;
+		}
+		else
+		{
+			cout << "Кого удалять-то? В очереди уже и так никого нет!\n\n";
+		}
+	}
+
+	bool empty()
+	{
+		return size == 0;
+	}
+
+	int checkSize()
+	{
+		return size;
+	}
+
+	void clear()
+	{
+		first = 0;
+		last = 0;
+		size = 0;
+	}
+
+	Worker front()
+	{
+		return queueArr[first];
+	}
+
+	void printAll()
+	{
+		if (first < last )
+		{
+			for (int i = first; i < last; i++)
+			{
+				queueArr[i].print();
+			}
+		}
+		else if (first >= last && size != 0)
+		{
+			for (int i = first; i < SIZE; i++)
+			{
+				queueArr[i].print();
+			}
+			for (int i = 0; i < last; i++)
+			{
+				queueArr[i].print();
+			}
+		}
+		else
+		{
+			cout << "Ау-у! Здесь есть кто нибудь? Похоже, никого...\n\n";
+		}
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	Worker james{ "Глава компании", 11, 70000 };
+	Worker may{ "Зам. главы", 7, 50000 };
+	Worker viktor{ "Бухгалтер", 8, 35000 };
+	Worker alex{ "Уборщик", 2, 15000 };
+	Worker pavel{ "Охранник", 15, 20000 };
+	Worker bob{ "Секретарь", 5, 30000 };
+	Worker jack{ "Менеджер", 4, 32000 };
+	Worker peter{ "Маркетолог", 9, 46000 };
+	Worker john{ "Маркетолог", 9, 46000 };
+
+	Queue WorkerQueue;
+	cout << "Создана очередь размера: " << SIZE << "\n\n";
+
+	WorkerQueue.push(james);
+	WorkerQueue.push(may);
+	WorkerQueue.push(viktor);
+	WorkerQueue.push(alex);
+	WorkerQueue.push(pavel);
+
+	cout << "Размер очереди: " << WorkerQueue.checkSize() << "\n\n";
+	WorkerQueue.printAll();
+	cout << "--------------------------------------\n\n";
+
+	WorkerQueue.queueArr[WorkerQueue.first].salary += 200;
+	WorkerQueue.push(WorkerQueue.queueArr[WorkerQueue.first]);
+	WorkerQueue.pop();
+
+	cout << "--------------------------------------\n\n";
+	cout << "Размер очереди: " << WorkerQueue.checkSize() << "\n\n";
+	WorkerQueue.printAll();
+	cout << "--------------------------------------\n\n";
+
+	WorkerQueue.push(bob);
+	WorkerQueue.push(jack);
+	WorkerQueue.push(peter);
+	WorkerQueue.push(john);
+
+	cout << "--------------------------------------\n\n";
+	cout << "Размер очереди: " << WorkerQueue.checkSize() << "\n\n";
+	WorkerQueue.printAll();
+	cout << "--------------------------------------\n\n";
+
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+
+	cout << "--------------------------------------\n\n";
+	cout << "Размер очереди: " << WorkerQueue.checkSize() << "\n\n";
+	WorkerQueue.printAll();
+	cout << "--------------------------------------\n\n";
+
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+	WorkerQueue.pop();
+
+	cout << "--------------------------------------\n\n";
+	cout << "Размер очереди: " << WorkerQueue.checkSize() << "\n\n";
+	WorkerQueue.printAll();
+
+	return 0;
+}
