@@ -1,0 +1,130 @@
+#include <iostream>
+#include <string>
+#define SIZE 7
+using namespace std;
+
+struct Action
+{
+	string text;
+	int raw;
+
+	void print()
+	{
+		cout << "Строчка: " << raw << "\tТекст: " << text << "\n\n";
+	}
+};
+
+struct Stack
+{
+	Action stackArr[SIZE];
+	int bottom = 0;
+	int top = 0;
+
+	void push(Action current)
+	{
+		if (checkSize() != SIZE)
+		{
+			stackArr[top] = current;
+			top++;
+		}
+		else cout << "Места нет! Стек переполнен.\n\n";
+	}
+
+	void pop()
+	{
+		if (!empty()) top--;
+		else cout << "Стек уже пустой. Удалять нечего!\n\n";
+	}
+
+	int checkSize()
+	{
+		return top;
+	}
+
+	void clear()
+	{
+		bottom = 0;
+		top = 0;
+	}
+
+	bool empty()
+	{
+		return top == 0;
+	}
+
+	Action returnTop()
+	{
+		if (!empty()) return stackArr[top-1];
+	}
+
+	void printAll()
+	{
+		if (!empty())
+		{
+			for (int i = 0; i < top; i++)
+			{
+				stackArr[i].print();
+			}
+		}
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	Action edit1{ "У врат обители святой", 1 };
+	Action edit2{ "Стоял просящий подаянья", 2 };
+	Action edit3{ "Бедняк иссохший, чуть живой", 3 };
+	Action edit4{ "От глада, жажды и страданья", 4 };
+	Action edit5{ "Куска лишь хлеба он просил", 5 };
+	Action edit6{ "И взор являл живую муку", 6 };
+	Action edit7{ "И кто-то камень положил", 7 };
+	Action edit8{ "В его протянутую руку", 8 };
+	Action edit9{ "Так я молил твоей любви", 9 };
+	
+	Stack HistoryStack;
+	cout << "Создан стек размера: " << SIZE << "\n\n";
+
+	HistoryStack.push(edit1);
+	HistoryStack.push(edit2);
+	HistoryStack.push(edit3);
+	HistoryStack.push(edit4);
+
+	cout << "Размер стека: " << HistoryStack.checkSize() << "\n\n";
+	HistoryStack.printAll();
+	cout << "--------------------------------------\n\n";
+
+	HistoryStack.push(edit5);
+	HistoryStack.push(edit6);
+	HistoryStack.push(edit7);
+	HistoryStack.push(edit8);
+	HistoryStack.push(edit9);
+
+	cout << "Размер стека: " << HistoryStack.checkSize() << "\n\n";
+	HistoryStack.printAll();
+	cout << "--------------------------------------\n\n";
+
+	HistoryStack.pop();
+	HistoryStack.pop();
+
+	cout << "Размер стека: " << HistoryStack.checkSize() << "\n\n";
+	HistoryStack.printAll();
+	cout << "--------------------------------------\n\n";
+
+	HistoryStack.stackArr[HistoryStack.top-1].text = { "Стих испорчен" };
+
+	cout << "Размер стека: " << HistoryStack.checkSize() << "\n\n";
+	HistoryStack.printAll();
+	cout << "--------------------------------------\n\n";
+
+	HistoryStack.pop();
+	HistoryStack.pop();
+	HistoryStack.pop();
+	HistoryStack.pop();
+	HistoryStack.pop();
+	HistoryStack.pop();
+
+	cout << "Размер стека: " << HistoryStack.checkSize() << "\n\n";
+	HistoryStack.printAll();
+	cout << "--------------------------------------\n\n";
+}
